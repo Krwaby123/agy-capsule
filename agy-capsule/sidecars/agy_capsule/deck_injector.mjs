@@ -99,8 +99,8 @@ function pageMount(d) {
   }
 
   // Upgrade or initialize DOM structure in-place
-  if (root.getAttribute('data-deck-ver') !== '40') {
-    root.setAttribute('data-deck-ver', '40');
+  if (root.getAttribute('data-deck-ver') !== '41') {
+    root.setAttribute('data-deck-ver', '41');
     root.style.cssText = [
       'display: inline-flex',
       'align-items: center',
@@ -366,31 +366,31 @@ function pageMount(d) {
         #deck-metrics-strip .dk-quota-pop {
           width: max-content;
         }
-        #deck-metrics-strip .dk-q-group {
-          margin-bottom: 8px;
+        #deck-metrics-strip .dk-q-grid {
+          display: grid;
+          grid-template-columns: minmax(54px, auto) minmax(50px, auto) minmax(48px, auto);
+          align-items: center;
+          column-gap: 8px;
+          row-gap: 2px;
+          font-size: 13.5px;
+          font-variant-numeric: tabular-nums;
         }
-        #deck-metrics-strip .dk-q-group:last-child {
-          margin-bottom: 0;
+        #deck-metrics-strip .dk-q-group,
+        #deck-metrics-strip .dk-q-row {
+          display: contents;
         }
         #deck-metrics-strip .dk-q-title {
+          grid-column: 1 / -1;
           font-size: 13.5px;
           font-weight: 500;
           line-height: 1.25;
           color: var(--foreground, #18181b);
           color: color-mix(in srgb, var(--foreground, #18181b) 88%, transparent);
-          margin-bottom: 0px;
+          margin-top: 6px;
+          margin-bottom: -2px;
         }
-        #deck-metrics-strip .dk-q-row {
-          display: grid;
-          grid-template-columns: minmax(54px, auto) 50px 48px;
-          align-items: center;
-          column-gap: 8px;
-          font-size: 13.5px;
-          font-variant-numeric: tabular-nums;
-          margin-bottom: 2px;
-        }
-        #deck-metrics-strip .dk-q-row:last-child {
-          margin-bottom: 0;
+        #deck-metrics-strip .dk-q-group:first-child .dk-q-title {
+          margin-top: 0;
         }
         #deck-metrics-strip .dk-q-label {
           color: var(--muted-foreground, #8e8e93);
@@ -918,6 +918,9 @@ function toView(d) {
     }
     quotaHtml += '</div>';
     quotaSummaryGroups.push({ title, rawName, modelsInGroup, q5h, qWk });
+  }
+  if (quotaHtml) {
+    quotaHtml = '<div class="dk-q-grid">' + quotaHtml + '</div>';
   }
 
   return {
